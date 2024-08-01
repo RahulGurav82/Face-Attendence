@@ -161,9 +161,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <script  src="script.js"></script>
 <script  src="../admin/javascript/main.js"></script>
 
-
-
-
-
 </body>
 </html>
