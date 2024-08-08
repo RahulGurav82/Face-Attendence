@@ -59,12 +59,16 @@ let modelsLoaded = false;
 
 
 Promise.all([
-  faceapi.nets.ssdMobilenetv1.loadFromUri("http://localhost/models"),
-  faceapi.nets.faceRecognitionNet.loadFromUri("http://localhost/models"),
-  faceapi.nets.faceLandmark68Net.loadFromUri("http://localhost/models"),
+    faceapi.nets.ssdMobilenetv1.loadFromUri("http://localhost:8000/models"),
+    faceapi.nets.faceRecognitionNet.loadFromUri("http://localhost:8000/models"),
+    faceapi.nets.faceLandmark68Net.loadFromUri("http://localhost:8000/models"),
 ]).then(() => {
-  modelsLoaded = true;
+    modelsLoaded = true;
+    console.log('Models loaded successfully');
+}).catch(err => {
+    console.error('Error loading models:', err);
 });
+
 startButton.addEventListener("click", async () => {
     videoContainer.style.display="flex";
   if (!webcamStarted && modelsLoaded) {
