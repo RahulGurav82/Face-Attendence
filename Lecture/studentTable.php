@@ -9,8 +9,8 @@ include '../Includes/session.php';
             <tr>
                 <th>Registration No</th>
                 <th>Name</th>
-                <th>Course</th>
-                <th>Unit</th>
+                <th>Years</th>
+                <th>Subject</th>
                 <th>Venue</th>
                 <th>Attendance</th>
                 <th>Settings</th>

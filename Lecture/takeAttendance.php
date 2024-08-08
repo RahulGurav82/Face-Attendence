@@ -101,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <form class="lecture-options" id="selectForm">
     <select required name="course" id="courseSelect"  onChange="updateTable()">
-        <option value="" selected>Select Course</option>
+        <option value="" selected>Select Year</option>
         <?php
         $courseNames = getCourseNames($conn);
         foreach ($courseNames as $course) {
@@ -132,9 +132,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
    
     </form>
     <div class="attendance-button">
-      <button id="startButton" class="add" >Launch Facial Recognition</button>
+      <button id="startButton" class="add" >Launch Attendance</button>
       <button id="endButton"class="add" style="display:none">End Attendance Process</button>
-      <button id="endAttendance" class="add" >END Attendance Taking</button>
+      <button id="endAttendance" class="add" >END Attendance</button>
     </div>
    
     <div class="video-container" style="display:none;">

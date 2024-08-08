@@ -160,8 +160,8 @@ if(isset($_POST['addStudent'])){
                             <tr>
                                 <th>Registration No</th>
                                 <th>Name</th>
-                                <th>Faculty</th>
                                 <th>Course</th>
+                                <th>Years</th>
                                 <th>Email</th>
                                 <th>Settings</th>
                             </tr>
@@ -210,7 +210,7 @@ if(isset($_POST['addStudent'])){
                         <input type="email"  name="email" value="<?php echo $row['email'];?>" placeholder="Email Address">
                         <input type="text"  required name="registrationNumber" value="<?php echo $row['registrationNumber'];?>" placeholder="Registration Number">
                         <select required name="faculty">
-                        <option value="" selected>Select Faculty</option>
+                        <option value="" selected>Select Course</option>
                         <?php
                         $facultyNames = getFacultyNames($conn);
                         foreach ($facultyNames as $faculty) {
@@ -220,7 +220,7 @@ if(isset($_POST['addStudent'])){
                     </select>  <br/>
 
                         <select required name="course">
-                                <option value="" selected>Select Course</option>
+                                <option value="" selected>Select Years</option>
                                 <?php
                                 $courseNames = getCourseNames($conn);
                                 foreach ($courseNames as $course) {

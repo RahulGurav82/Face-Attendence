@@ -110,7 +110,7 @@ if (!empty($unitCode)) {
     <div class="main--content">
     <form class="lecture-options" id="selectForm">
     <select required name="course" id="courseSelect"  onChange="updateTable()">
-        <option value="" selected>Select Course</option>
+        <option value="" selected>Select Years</option>
         <?php
         $courseNames = getCourseNames($conn);
         foreach ($courseNames as $course) {
@@ -120,7 +120,7 @@ if (!empty($unitCode)) {
     </select>
 
     <select required name="unit" id="unitSelect" onChange="updateTable()">
-        <option value="" selected>Select Unit</option>
+        <option value="" selected>Select Subject</option>
         <?php
         $unitNames = getUnitNames($conn);
         foreach ($unitNames as $unit) {
