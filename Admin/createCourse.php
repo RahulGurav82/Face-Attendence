@@ -70,13 +70,13 @@ function getCourseNames($conn) {
         $query=mysqli_query($conn,"select * from tblunit where unitCode='$unitCode'");
         $ret=mysqli_fetch_array($query);
             if($ret > 0){ 
-                $message = " Unit Already Exists";
+                $message = " Subject Already Exists";
 
         }
         else{
             $query=mysqli_query($conn,"insert into tblunit(name,unitCode,courseID,dateCreated) 
             value('$unitName','$unitCode','$courseID','$dateRegistered')");
-            $message = " Unit Inserted Successfully";
+            $message = " Subject Inserted Successfully";
 
         }
        
@@ -143,7 +143,7 @@ function getCourseNames($conn) {
                         <div class="card--data">
                             <div class="card--content">
                             <button class="add"><i class="ri-add-line"></i>Add Course</button>
-                                <h1><?php echo $courses;?> Courses</h1>
+                                <h1><?php echo $courses;?> Years</h1>
                             </div>
                             <i class="ri-user-2-line card--icon--lg"></i>
                         </div>
@@ -156,8 +156,8 @@ function getCourseNames($conn) {
                         ?>
                         <div class="card--data" >
                             <div class="card--content">
-                            <button class="add"><i class="ri-add-line"></i>Add Units</button>
-                                <h1><?php echo $unit;?> Units</h1>
+                            <button class="add"><i class="ri-add-line"></i>Add Subject</button>
+                                <h1><?php echo $unit;?> Subjects</h1>
                             </div>
                             <i class="ri-file-text-line card--icon--lg"></i>
                         </div>
@@ -184,7 +184,7 @@ function getCourseNames($conn) {
 
             <div class="table-container">
                 <div class="title">
-                    <h2 class="section--title">Course</h2>
+                    <h2 class="section--title">Years</h2>
                 </div>
                 </a>
                 <div class="table">
@@ -193,7 +193,7 @@ function getCourseNames($conn) {
                             <tr>
                                 <th>Name</th>
                                 <th>Faculty</th>
-                                <th>Total Units</th>
+                                <th>Total Subject</th>
                                 <th>Total Students</th>
                                 <th>Date Created</th>
                                 <th>Action</th>
@@ -237,16 +237,16 @@ function getCourseNames($conn) {
             </div> 
             <div class="table-container">
                 <div class="title">
-                    <h2 class="section--title">Unit</h2>
+                    <h2 class="section--title">Subject</h2>
                 </div>
                 </a>
                 <div class="table">
                     <table>
                         <thead>
                             <tr>
-                                <th>Unit Code</th>
+                                <th>Subject Code</th>
                                 <th>Name</th>
-                                <th>Course</th>
+                                <th>Year</th>
                                 <th>Total Student</th>
                                 <th>Date Created</th>
                                 <th>Action</th>
@@ -297,9 +297,9 @@ function getCourseNames($conn) {
                             <tr>
                                 <th>Code</th>
                                 <th>Name</th>
-                                <th>Total Courses</th>
+                                <th>Total Years</th>
                                 <th>Total Students</th>
-                                <th>Total Lectures</th>
+                                <th>Total Teachers</th>
                                 <th>Date Created</th>
                             </tr>
                         </thead>
@@ -348,7 +348,7 @@ function getCourseNames($conn) {
 <form method="POST" action="" name="addCourse" enctype="multipart/form-data">
     <div style="display:flex; justify-content:space-around;">
         <div class="form-title">
-            <p>Add Course</p>
+            <p>Add Year</p>
         </div>
         <div>
             <span class="close">&times;</span>
@@ -369,7 +369,7 @@ function getCourseNames($conn) {
         ?>
     </select>
 
-    <input type="submit" class="submit" value="Save Course" name="addCourse">
+    <input type="submit" class="submit" value="Save Year" name="addCourse">
 </form>		  
     </div>
 
@@ -377,7 +377,7 @@ function getCourseNames($conn) {
 <form method="POST" action="" name="addUnit" enctype="multipart/form-data">
     <div style="display:flex; justify-content:space-around;">
         <div class="form-title">
-            <p>Add Unit</p>
+            <p>Add Subject</p>
         </div>
         <div>
             <span class="close">&times;</span>
@@ -388,7 +388,7 @@ function getCourseNames($conn) {
     <input type="text" name="unitCode" placeholder="Unit Code" required>
 
     <select required name="lecture">
-        <option value="" selected>Assign Lecture</option>
+        <option value="" selected>Assign Teacher</option>
         <?php
         $lectureNames = getLectureNames($conn);
         foreach ($lectureNames as $lecture) {
@@ -397,7 +397,7 @@ function getCourseNames($conn) {
         ?>
     </select>
     <select required name="course">
-        <option value="" selected>Select Course</option>
+        <option value="" selected>Select Year</option>
         <?php
         $courseNames = getCourseNames($conn);
         foreach ($courseNames as $course) {
@@ -406,7 +406,7 @@ function getCourseNames($conn) {
         ?>
     </select>
 
-    <input type="submit" class="submit" value="Save Unit" name="addUnit">
+    <input type="submit" class="submit" value="Save Subject" name="addUnit">
 </form>		  
  </div>
     

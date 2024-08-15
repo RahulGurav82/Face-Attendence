@@ -101,7 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <form class="lecture-options" id="selectForm">
     <select required name="course" id="courseSelect"  onChange="updateTable()">
-        <option value="" selected>Select Course</option>
+        <option value="" selected>Select Year</option>
         <?php
         $courseNames = getCourseNames($conn);
         foreach ($courseNames as $course) {
@@ -154,9 +154,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 </div>
 </section>
-    <script>
-
- </script>
    
 <script  src="script.js"></script>
 <script  src="../admin/javascript/main.js"></script>

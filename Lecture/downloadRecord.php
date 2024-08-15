@@ -44,10 +44,11 @@ function getUnitNames($conn) {
 }
 
 
-function fetchStudentRecordsFromDatabase($conn, $courseCode, $unitCode) {
+function fetchStudentRecordsFromDatabase($conn, $courseCode, $unitCode, $startDate, $endDate) {
     $studentRows = array();
 
-    $query = "SELECT * FROM tblattendance WHERE course = '$courseCode' AND unit = '$unitCode'";
+    // Adjust the query to include the date range filter
+    $query = "SELECT * FROM tblattendance WHERE course = '$courseCode' AND unit = '$unitCode' AND dateMarked BETWEEN '$startDate' AND '$endDate'";
     $result = mysqli_query($conn, $query);
 
     if ($result && mysqli_num_rows($result) > 0) {
@@ -59,10 +60,14 @@ function fetchStudentRecordsFromDatabase($conn, $courseCode, $unitCode) {
     return $studentRows;
 }
 
+
 $courseCode = isset($_GET['course']) ? $_GET['course'] : '';
 $unitCode = isset($_GET['unit']) ? $_GET['unit'] : '';
+$startDate = isset($_GET['startDate']) ? $_GET['startDate'] : '';
+$endDate = isset($_GET['endDate']) ? $_GET['endDate'] : '';
 
-$studentRows = fetchStudentRecordsFromDatabase($conn, $courseCode, $unitCode);
+$studentRows = fetchStudentRecordsFromDatabase($conn, $courseCode, $unitCode, $startDate, $endDate);
+
 
 $coursename = "";
 if (!empty($courseCode)) {
@@ -109,8 +114,8 @@ if (!empty($unitCode)) {
         <?php include 'includes/sidebar.php';?>
     <div class="main--content">
     <form class="lecture-options" id="selectForm">
-    <select required name="course" id="courseSelect"  onChange="updateTable()">
-        <option value="" selected>Select Course</option>
+    <select required name="course" id="courseSelect" onChange="updateTable()">
+        <option value="" selected>Select Year</option>
         <?php
         $courseNames = getCourseNames($conn);
         foreach ($courseNames as $course) {
@@ -120,7 +125,7 @@ if (!empty($unitCode)) {
     </select>
 
     <select required name="unit" id="unitSelect" onChange="updateTable()">
-        <option value="" selected>Select Unit</option>
+        <option value="" selected>Select Subject</option>
         <?php
         $unitNames = getUnitNames($conn);
         foreach ($unitNames as $unit) {
@@ -128,7 +133,12 @@ if (!empty($unitCode)) {
         }
         ?>
     </select>
-    </form>
+
+    <!-- Date inputs for selecting the range -->
+    <input type="date" id="startDate" name="startDate" onChange="updateTable()" required>
+    <input type="date" id="endDate" name="endDate" onChange="updateTable()" required>
+</form>
+
 
     <button class="add" onclick="exportTableToExcel('attendaceTable', '<?php echo $unitCode ?>_on_<?php echo date('Y-m-d'); ?>','<?php echo $coursename ?>', '<?php  echo $unitname ?>')">Export Attendance As Excel</button>
 
@@ -139,45 +149,53 @@ if (!empty($unitCode)) {
     <div class="table attendance-table" id="attendaceTable">
         <table>
             <thead>
-                <tr>
-                    <th>Registration No</th>
-                    <?php
-                    $distinctDatesQuery = "SELECT DISTINCT dateMarked FROM tblattendance where course='$courseCode' and unit='$unitCode'";
-                    $distinctDatesResult = mysqli_query($conn, $distinctDatesQuery);
-
-                    if ($distinctDatesResult) {
-                        while ($dateRow = mysqli_fetch_assoc($distinctDatesResult)) {
-                            echo "<th>" . $dateRow['dateMarked'] . "</th>";
-                        }
-                    }
-                    ?>
-                </tr>
-            </thead>
-            <tbody>
+            <tr>
+                <!-- Registration No column header only appears once -->
+                <th>Registration No</th>
                 <?php
-                foreach ($studentRows as $row) {
-                    echo "<tr>";
-                    echo "<td>" . $row["studentRegistrationNumber"] . "</td>";
-                    $distinctDatesResult = mysqli_query($conn, $distinctDatesQuery);
-                    if ($distinctDatesResult) {
-                        while ($dateRow = mysqli_fetch_assoc($distinctDatesResult)) {
-                            $date = $dateRow['dateMarked'];
-                            $attendanceQuery = "SELECT attendanceStatus FROM tblattendance WHERE studentRegistrationNumber = '" . $row['studentRegistrationNumber'] . "' AND dateMarked = '$date'";
-                            $attendanceResult = mysqli_query($conn, $attendanceQuery);
-                            
-                            if ($attendanceResult && mysqli_num_rows($attendanceResult) > 0) {
-                                $attendanceData = mysqli_fetch_assoc($attendanceResult);
-                                echo "<td>" . $attendanceData['attendanceStatus'] . "</td>";
-                            } else {
-                                echo "<td>Absent</td>";
-                            }
-                        }
+                // Fetch distinct dates to create the dynamic date columns
+                $distinctDatesQuery = "SELECT DISTINCT dateMarked FROM tblattendance WHERE course='$courseCode' AND unit='$unitCode'";
+                $distinctDatesResult = mysqli_query($conn, $distinctDatesQuery);
+
+                if ($distinctDatesResult) {
+                    while ($dateRow = mysqli_fetch_assoc($distinctDatesResult)) {
+                        echo "<th>" . $dateRow['dateMarked'] . "</th>";
                     }
-                    
-                    echo "</tr>";
                 }
                 ?>
-            </tbody>
+            </tr>
+            </thead>
+            <tbody>
+    <?php
+    // Loop through each student's attendance records
+    foreach ($studentRows as $row) {
+        echo "<tr>";
+        // Registration No column is populated for each student
+        echo "<td>" . $row["studentRegistrationNumber"] . "</td>";
+
+        // Loop through the distinct dates and populate attendance data for each date
+        $distinctDatesResult = mysqli_query($conn, $distinctDatesQuery);
+        if ($distinctDatesResult) {
+            while ($dateRow = mysqli_fetch_assoc($distinctDatesResult)) {
+                $date = $dateRow['dateMarked'];
+                // Query to get attendance status for the current date and student
+                $attendanceQuery = "SELECT attendanceStatus FROM tblattendance WHERE studentRegistrationNumber = '" . $row['studentRegistrationNumber'] . "' AND dateMarked = '$date'";
+                $attendanceResult = mysqli_query($conn, $attendanceQuery);
+                
+                // If attendance data is found, display it; otherwise, display 'Absent'
+                if ($attendanceResult && mysqli_num_rows($attendanceResult) > 0) {
+                    $attendanceData = mysqli_fetch_assoc($attendanceResult);
+                    echo "<td>" . $attendanceData['attendanceStatus'] . "</td>";
+                } else {
+                    echo "<td>Absent</td>";
+                }
+            }
+        }
+        
+        echo "</tr>";
+    }
+    ?>
+</tbody>
         </table>
         
     </div>
@@ -195,19 +213,26 @@ if (!empty($unitCode)) {
 
 
 <script>
-function updateTable(){
+function updateTable() {
     var courseSelect = document.getElementById("courseSelect");
     var unitSelect = document.getElementById("unitSelect");
-    
+    var startDate = document.getElementById("startDate").value;
+    var endDate = document.getElementById("endDate").value;
+
     var selectedCourse = courseSelect.value;
     var selectedUnit = unitSelect.value;
-    
-    var url = "downloadrecord.php";
-    if (selectedCourse && selectedUnit) {
-        url += "?course=" + encodeURIComponent(selectedCourse) + "&unit=" + encodeURIComponent(selectedUnit);
-        window.location.href = url;
 
-    }}
+    var url = "downloadrecord.php";
+    if (selectedCourse && selectedUnit && startDate && endDate) {
+        url += "?course=" + encodeURIComponent(selectedCourse)
+            + "&unit=" + encodeURIComponent(selectedUnit)
+            + "&startDate=" + encodeURIComponent(startDate)
+            + "&endDate=" + encodeURIComponent(endDate);
+        window.location.href = url;
+    }
+}
+
+    
     function exportTableToExcel(tableId, filename = '', courseCode = '', unitCode = '') {
     var table = document.getElementById(tableId);
     var currentDate = new Date();

@@ -26,6 +26,8 @@ SET time_zone = "+00:00";
 --
 -- Table structure for table `tbladmin`
 --
+CREATE DATABASE attendancemsystem;
+USE attendancemsystem;
 
 CREATE TABLE `tbladmin` (
   `Id` int(10) NOT NULL,

@@ -58,7 +58,7 @@ include '../Includes/session.php';
                         ?>
                         <div class="card--data">
                             <div class="card--content">
-                                <h5 class="card--title">Units</h5>
+                                <h5 class="card--title">Subject</h5>
                                 <h1><?php echo $unit;?></h1>
                             </div>
                             <i class="ri-file-text-line card--icon--lg"></i>
@@ -73,7 +73,7 @@ include '../Includes/session.php';
                         ?>
                         <div class="card--data">
                             <div class="card--content">
-                                <h5 class="card--title">Registered Lectures</h5>
+                                <h5 class="card--title">Registered Teachers</h5>
                                 <h1><?php echo $totalLecture;?></h1>
                             </div>
                             <i class="ri-user-line card--icon--lg"></i>
@@ -85,7 +85,7 @@ include '../Includes/session.php';
            
             <div class="table-container">
             <a href="createLecture.php" style="text-decoration:none;"> <div class="title">
-                    <h2 class="section--title">Lectures</h2>
+                    <h2 class="section--title">Teachers</h2>
                     <button class="add"><i class="ri-add-line"></i>Add Teachers</button>
                 </div>
             </a>
@@ -227,7 +227,7 @@ include '../Includes/session.php';
                             <tr>
                                 <th>Name</th>
                                 <th>Faculty</th>
-                                <th>Total Units</th>
+                                <th>Total Subject</th>
                                 <th>Total Students</th>
                                 <th>Date Created</th>
                                 <th>Action</th>

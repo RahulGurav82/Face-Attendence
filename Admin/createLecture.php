@@ -33,12 +33,12 @@ if (isset($_POST["addLecture"])) {
     $query = mysqli_query($conn, "SELECT * FROM tbllecture WHERE emailAddress='$email'");
     $ret = mysqli_fetch_array($query);
     if ($ret > 0) { 
-        $message = "Lecture Already Exists";
+        $message = "Teacher Already Exists";
     } else {
         // Insert new lecture details
         $query = mysqli_query($conn, "INSERT INTO tbllecture(firstName, lastName, emailAddress, password, phoneNo, facultyCode, dateCreated) 
                                       VALUES ('$firstName', '$lastName', '$email', '$password', '$phoneNumber', '$faculty', '$dateRegistered')");
-        $message = "Lecture Added Successfully";
+        $message = "Teacher Added Successfully";
     }
 }
 ?>
@@ -68,8 +68,8 @@ if (isset($_POST["addLecture"])) {
         <div class="table-container">
             <a href="#add-form" style="text-decoration:none;">
                 <div class="title" id="addLecture">
-                    <h2 class="section--title">Lectures</h2>
-                    <button class="add"><i class="ri-add-line"></i>Add Lecture</button>
+                    <h2 class="section--title">Teachers</h2>
+                    <button class="add"><i class="ri-add-line"></i>Add Teacher</button>
                 </div>
             </a>
             <div class="table">
@@ -112,7 +112,7 @@ if (isset($_POST["addLecture"])) {
             <form method="POST" action="" name="addLecture" enctype="multipart/form-data">
                 <div style="display:flex; justify-content:space-around;">
                     <div class="form-title">
-                        <p>Add Lecture</p>
+                        <p>Add Teacher</p>
                     </div>
                     <div>
                         <span class="close">&times;</span>
@@ -133,7 +133,7 @@ if (isset($_POST["addLecture"])) {
                     }
                     ?>
                 </select>
-                <input type="submit" class="submit" value="Save Lecture" name="addLecture">
+                <input type="submit" class="submit" value="Save Teacher" name="addLecture">
             </form>		  
         </div>
     </div>

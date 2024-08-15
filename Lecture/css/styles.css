@@ -432,60 +432,108 @@ padding-bottom:5px;
     color: #5073fb;
 }
 
-
-/* table-container */
-.attendance-button{
-    display:flex;
-    justify-content:space-evenly;
-    
-}
-.table-container {
+/* Container for Attendance Table and Buttons */
+.attendance-button {
+    display: flex;
+    justify-content: space-evenly;
     margin-bottom: 20px;
 }
 
-.table {
-    height: 200px;
-    overflow-y: scroll;
+/* Main Table Container */
+.table-container {
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Scrollable Table with Horizontal and Vertical Scrolling */
+.table {
+    max-height: 300px;
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
+/* Table Styling */
 table {
     width: 100%;
     text-align: left;
     border-collapse: collapse;
-}
-.attendance-table{
-    overflow-x: scroll;
-    height:300px;
-}
-tr {
-    border-bottom: 1px solid #f1f1f1;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-td,
+/* Table Header Styling */
 th {
-    padding-block: 10px;
+    background-color: #4B1757;
+    color: white;
+    padding: 12px;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    font-weight: bold;
+    text-transform: uppercase;
 }
 
+/* Table Row and Cell Styling */
+tr {
+    border-bottom: 1px solid #e0e0e0;
+    transition: background-color 0.3s ease;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+td {
+    padding: 12px;
+    color: #333;
+}
+
+/* Status Colors */
 .edit {
     color: #70d7a5;
     margin-right: 10px;
+    font-weight: bold;
 }
 
 .delete {
     color: #e86786;
+    font-weight: bold;
 }
 
 .pending {
     color: #f1d243;
+    font-weight: bold;
 }
 
 .confirmed {
     color: #70d7a5;
+    font-weight: bold;
 }
 
 .rejected {
     color: #e86786;
+    font-weight: bold;
 }
+
+/* Responsive Design for Smaller Screens */
+@media (max-width: 768px) {
+    .table-container {
+        padding: 10px;
+        box-shadow: none;
+    }
+
+    th, td {
+        padding: 8px;
+    }
+
+    .attendance-button {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
 
 
 /* responsive starts here */
