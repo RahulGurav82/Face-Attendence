@@ -33,7 +33,11 @@ if (isset($_POST["addLecture"])) {
     $query = mysqli_query($conn, "SELECT * FROM tbllecture WHERE emailAddress='$email'");
     $ret = mysqli_fetch_array($query);
     if ($ret > 0) { 
+<<<<<<< HEAD
         $message = "Teacher Already Exists";
+=======
+        $message = "Teachers Already Exists";
+>>>>>>> 5fc7510542033e9ebdba711b025df2a820b8e5c8
     } else {
         // Insert new lecture details
         $query = mysqli_query($conn, "INSERT INTO tbllecture(firstName, lastName, emailAddress, password, phoneNo, facultyCode, dateCreated) 
@@ -79,7 +83,7 @@ if (isset($_POST["addLecture"])) {
                             <th>Name</th>
                             <th>Email Address</th>
                             <th>Phone No</th>
-                            <th>Faculty</th>
+                            <th>Course</th>
                             <th>Date Registered</th>
                             <th>Settings</th>
                         </tr>
@@ -112,7 +116,11 @@ if (isset($_POST["addLecture"])) {
             <form method="POST" action="" name="addLecture" enctype="multipart/form-data">
                 <div style="display:flex; justify-content:space-around;">
                     <div class="form-title">
+<<<<<<< HEAD
                         <p>Add Teacher</p>
+=======
+                        <p>Add Teachers</p>
+>>>>>>> 5fc7510542033e9ebdba711b025df2a820b8e5c8
                     </div>
                     <div>
                         <span class="close">&times;</span>
@@ -125,7 +133,7 @@ if (isset($_POST["addLecture"])) {
                 <input type="password" name="password" placeholder="Password" required>
 
                 <select required name="faculty">
-                    <option value="" selected>Select Faculty</option>
+                    <option value="" selected>Select Course</option>
                     <?php
                     $facultyNames = getFacultyNames($conn);
                     foreach ($facultyNames as $faculty) {

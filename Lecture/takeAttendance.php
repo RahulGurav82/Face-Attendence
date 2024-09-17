@@ -45,7 +45,7 @@ function getUnitNames($conn) {
 
     return $unitNames;
 }
-
+ 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $attendanceData = json_decode(file_get_contents("php://input"), true);
@@ -132,15 +132,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
    
     </form>
     <div class="attendance-button">
-      <button id="startButton" class="add" >Launch Facial Recognition</button>
-      <button id="endButton"class="add" style="display:none">End Attendance Process</button>
-      <button id="endAttendance" class="add" >END Attendance Taking</button>
-    </div>
-   
-    <div class="video-container" style="display:none;">
-        <video  id="video" width="600" height="450" autoplay></video>
-        <canvas id="overlay"></canvas>
-    </div>
+    <button id="startButton" class="add">Launch Attendance</button>
+    <button id="endButton" class="add" style="display:none">End Attendance Process</button>
+    <button id="endAttendance" class="add">END Attendance</button>
+</div>
+
+<div class="video-container" style="display:none;">
+    <video id="video" width="600" height="450" autoplay></video>
+    <canvas id="overlay"></canvas>
+</div>
 
     <div class="table-container">
 

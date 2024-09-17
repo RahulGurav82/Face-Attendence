@@ -128,7 +128,7 @@ if (isset($_POST["addVenue"])) {
                         <thead>
                             <tr>
                                 <th>Class Name</th>
-                                <th>Faculty</th>
+                                <th>Years</th>
                                 <th>Current Status</th>
                                 <th>Capacity</th>
                                 <th>Classification</th>
@@ -187,7 +187,7 @@ if (isset($_POST["addVenue"])) {
       <option value="office">Office</option>
     </select>
     <select required name="faculty">
-        <option value="" selected>Select Faculty</option>
+        <option value="" selected>Select Course</option>
         <?php
         $facultyNames = getFacultyNames($conn);
         foreach ($facultyNames as $faculty) {

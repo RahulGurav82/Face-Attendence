@@ -9,7 +9,11 @@ include '../Includes/session.php';
             <tr>
                 <th>Registration No</th>
                 <th>Name</th>
+<<<<<<< HEAD
                 <th>Year</th>
+=======
+                <th>Years</th>
+>>>>>>> 5fc7510542033e9ebdba711b025df2a820b8e5c8
                 <th>Subject</th>
                 <th>Venue</th>
                 <th>Attendance</th>

@@ -55,6 +55,19 @@ function fetchStudentRecords($conn, $courseCode, $unitCode, $startDate, $endDate
               AND unit = '$unitCode' 
               AND dateMarked BETWEEN '$startDate' AND '$endDate'";
 
+<<<<<<< HEAD
+=======
+function fetchStudentRecordsFromDatabase($conn, $courseCode, $unitCode, $startDate, $endDate) {
+    $studentRows = array();
+
+    // Modify the query to include date range filtering
+    $query = "SELECT * FROM tblattendance WHERE course = '$courseCode' AND unit = '$unitCode'";
+    
+    if (!empty($startDate) && !empty($endDate)) {
+        $query .= " AND dateMarked BETWEEN '$startDate' AND '$endDate'";
+    }
+
+>>>>>>> 5fc7510542033e9ebdba711b025df2a820b8e5c8
     $result = mysqli_query($conn, $query);
     $studentRows = array();
 
@@ -67,6 +80,7 @@ function fetchStudentRecords($conn, $courseCode, $unitCode, $startDate, $endDate
     return $studentRows;
 }
 
+<<<<<<< HEAD
 // Function to fetch distinct dates for attendance
 function fetchDistinctDates($conn, $courseCode, $unitCode, $startDate, $endDate) {
     $query = "SELECT DISTINCT dateMarked 
@@ -122,10 +136,14 @@ function getUnitName($conn, $unitCode) {
 }
 
 // Step 1: Fetch necessary data based on selected course, unit, and date range
+=======
+
+>>>>>>> 5fc7510542033e9ebdba711b025df2a820b8e5c8
 $courseCode = isset($_GET['course']) ? $_GET['course'] : '';
 $unitCode = isset($_GET['unit']) ? $_GET['unit'] : '';
 $startDate = isset($_GET['startDate']) ? $_GET['startDate'] : '';
 $endDate = isset($_GET['endDate']) ? $_GET['endDate'] : '';
+<<<<<<< HEAD
 
 $studentRows = fetchStudentRecords($conn, $courseCode, $unitCode, $startDate, $endDate);
 $distinctDates = fetchDistinctDates($conn, $courseCode, $unitCode, $startDate, $endDate);
@@ -133,6 +151,31 @@ $attendanceData = fetchAttendanceData($conn, $courseCode, $unitCode, $startDate,
 
 $coursename = getCourseName($conn, $courseCode);
 $unitname = getUnitName($conn, $unitCode);
+=======
+
+$studentRows = fetchStudentRecordsFromDatabase($conn, $courseCode, $unitCode, $startDate, $endDate);
+
+
+$coursename = "";
+if (!empty($courseCode)) {
+    $coursename_query = "SELECT name FROM tblcourse WHERE courseCode = '$courseCode'";
+    $result = mysqli_query($conn, $coursename_query);
+    if ($result && mysqli_num_rows($result) > 0) {
+        $row = mysqli_fetch_assoc($result);
+        $coursename = $row['name'];
+    }
+}
+$unitname="";
+if (!empty($unitCode)) {
+    $unitname_query = "SELECT name FROM tblunit WHERE unitCode = '$unitCode'";
+    $result = mysqli_query($conn, $unitname_query);
+    if ($result && mysqli_num_rows($result) > 0) {
+        $row = mysqli_fetch_assoc($result);
+        $unitname = $row['name'];
+    }
+}
+
+>>>>>>> 5fc7510542033e9ebdba711b025df2a820b8e5c8
 ?>
 
 <!DOCTYPE html>
@@ -151,18 +194,112 @@ $unitname = getUnitName($conn, $unitCode);
 <body>
     <?php include 'includes/topbar.php'; ?>
     <section class="main">
+<<<<<<< HEAD
         <?php include 'includes/sidebar.php'; ?>
         <div class="main--content">
             <form class="lecture-options" id="selectForm">
                 <select required name="course" id="courseSelect" onChange="updateTable()">
                     <option value="" selected>Select Year</option>
+=======
+        <?php include 'includes/sidebar.php';?>
+    <div class="main--content">
+    <form class="lecture-options" id="selectForm">
+        <select required name="course" id="courseSelect"  onChange="updateTable()">
+            <option value="" selected>Select Years</option>
+            <?php
+            $courseNames = getCourseNames($conn);
+            foreach ($courseNames as $course) {
+                echo '<option value="' . $course["courseCode"] . '">' . $course["name"] . '</option>';
+            }
+            ?>
+        </select>
+
+        <select required name="unit" id="unitSelect" onChange="updateTable()">
+            <option value="" selected>Select Subject</option>
+            <?php
+            $unitNames = getUnitNames($conn);
+            foreach ($unitNames as $unit) {
+                echo '<option value="' . $unit["unitCode"] . '">' . $unit["name"] . '</option>';
+            }
+            ?>
+        </select>
+    
+        <!-- Date Range Inputs -->
+        <label for="startDate">Start Date:</label>
+        <input type="date" name="startDate" id="startDate" onChange="updateTable()">
+        
+        <label for="endDate">End Date:</label>
+        <input type="date" name="endDate" id="endDate" onChange="updateTable()">
+    </form>
+
+
+    <button class="add" onclick="exportTableToExcel('attendaceTable', '<?php echo $unitCode ?>_on_<?php echo date('Y-m-d'); ?>','<?php echo $coursename ?>', '<?php  echo $unitname ?>')">Export Attendance As Excel</button>
+
+    <div class="table-container">
+    <div class="title">
+        <h2 class="section--title">Attendance Preview</h2>
+    </div>
+    <div class="table attendance-table" id="attendaceTable">
+        <table>
+            <thead>
+                <tr>
+                    <th>Registration No</th>
+>>>>>>> 5fc7510542033e9ebdba711b025df2a820b8e5c8
                     <?php
                     $courseNames = getCourseNames($conn);
                     foreach ($courseNames as $course) {
                         echo '<option value="' . $course["courseCode"] . '">' . $course["name"] . '</option>';
                     }
                     ?>
+<<<<<<< HEAD
                 </select>
+=======
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                foreach ($studentRows as $row) {
+                    echo "<tr>";
+                    echo "<td>" . $row["studentRegistrationNumber"] . "</td>";
+                
+                    $distinctDatesResult = mysqli_query($conn, $distinctDatesQuery);
+                    $totalClasses = 0;
+                    $attendedClasses = 0;
+                
+                    if ($distinctDatesResult) {
+                        while ($dateRow = mysqli_fetch_assoc($distinctDatesResult)) {
+                            $totalClasses++;
+                            $date = $dateRow['dateMarked'];
+                            $attendanceQuery = "SELECT attendanceStatus FROM tblattendance WHERE studentRegistrationNumber = '" . $row['studentRegistrationNumber'] . "' AND dateMarked = '$date'";
+                            $attendanceResult = mysqli_query($conn, $attendanceQuery);
+                
+                            if ($attendanceResult && mysqli_num_rows($attendanceResult) > 0) {
+                                $attendanceData = mysqli_fetch_assoc($attendanceResult);
+                                $status = $attendanceData['attendanceStatus'];
+                                echo "<td>" . $status . "</td>";
+                                if ($status === 'Present') {
+                                    $attendedClasses++;
+                                }
+                            } else {
+                                echo "<td>Absent</td>";
+                            }
+                        }
+                    }
+                
+                    // Calculate attendance percentage
+                    $attendancePercentage = ($totalClasses > 0) ? ($attendedClasses / $totalClasses) * 100 : 0;
+                    echo "<td>" . round($attendancePercentage, 2) . "%</td>";
+                
+                    echo "</tr>";
+                }
+                
+                ?>
+            </tbody>
+        </table>
+        
+    </div>
+</div>
+>>>>>>> 5fc7510542033e9ebdba711b025df2a820b8e5c8
 
                 <select required name="unit" id="unitSelect" onChange="updateTable()">
                     <option value="" selected>Select Subject</option>
@@ -319,4 +456,65 @@ $unitname = getUnitName($conn, $unitCode);
     </script>
 </body>
 
+<<<<<<< HEAD
 </html>
+=======
+<script src="./min/js/filesaver.js"></script>
+<script src="./min/js/xlsx.js"></script>
+<script  src="../admin/javascript/main.js"></script>
+
+
+<script>
+function updateTable(){
+    var courseSelect = document.getElementById("courseSelect");
+    var unitSelect = document.getElementById("unitSelect");
+    var startDate = document.getElementById("startDate") ? document.getElementById("startDate").value : '';
+    var endDate = document.getElementById("endDate") ? document.getElementById("endDate").value : '';
+
+    var selectedCourse = courseSelect.value;
+    var selectedUnit = unitSelect.value;
+
+    var url = "downloadrecord.php";
+    if (selectedCourse && selectedUnit) {
+        url += "?course=" + encodeURIComponent(selectedCourse) + "&unit=" + encodeURIComponent(selectedUnit);
+        if (startDate && endDate) {
+            url += "&startDate=" + encodeURIComponent(startDate) + "&endDate=" + encodeURIComponent(endDate);
+        }
+        window.location.href = url;
+    }
+}
+
+function exportTableToExcel(tableId, filename = '', courseCode = '', unitCode = '') {
+    var table = document.getElementById(tableId);
+    var currentDate = new Date();
+    var formattedDate = currentDate.toLocaleDateString(); // Format the date as needed
+
+    var headerContent = '<p style="font-weight:700;"> Attendance for : ' + courseCode + ' Unit name : ' + unitCode + ' On: ' + formattedDate + '</p>';
+    var tbody = document.createElement('tbody');
+    var additionalRow = tbody.insertRow(0);
+    var additionalCell = additionalRow.insertCell(0);
+    additionalCell.innerHTML = headerContent;
+    table.insertBefore(tbody, table.firstChild);
+    
+    var wb = XLSX.utils.table_to_book(table, { sheet: "Attendance" });
+    var wbout = XLSX.write(wb, { bookType: 'xlsx', bookSST: true, type: 'binary' });
+    var blob = new Blob([s2ab(wbout)], { type: 'application/octet-stream' });
+
+    if (!filename.toLowerCase().endsWith('.xlsx')) {
+        filename += '.xlsx'; 
+    }
+
+    saveAs(blob, filename);
+}
+
+function s2ab(s) {
+    var buf = new ArrayBuffer(s.length);
+    var view = new Uint8Array(buf);
+    for (var i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xFF;
+    return buf;
+}
+
+</script>
+
+</html>
+>>>>>>> 5fc7510542033e9ebdba711b025df2a820b8e5c8

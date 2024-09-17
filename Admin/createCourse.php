@@ -142,7 +142,11 @@ function getCourseNames($conn) {
                         ?>
                         <div class="card--data">
                             <div class="card--content">
+<<<<<<< HEAD
                             <button class="add"><i class="ri-add-line"></i>Add Course</button>
+=======
+                            <button class="add"><i class="ri-add-line"></i>Add Years</button>
+>>>>>>> 5fc7510542033e9ebdba711b025df2a820b8e5c8
                                 <h1><?php echo $courses;?> Years</h1>
                             </div>
                             <i class="ri-user-2-line card--icon--lg"></i>
@@ -156,8 +160,13 @@ function getCourseNames($conn) {
                         ?>
                         <div class="card--data" >
                             <div class="card--content">
+<<<<<<< HEAD
                             <button class="add"><i class="ri-add-line"></i>Add Subject</button>
                                 <h1><?php echo $unit;?> Subjects</h1>
+=======
+                            <button class="add"><i class="ri-add-line"></i>Add Subjects</button>
+                                <h1><?php echo $unit;?> Subject</h1>
+>>>>>>> 5fc7510542033e9ebdba711b025df2a820b8e5c8
                             </div>
                             <i class="ri-file-text-line card--icon--lg"></i>
                         </div>
@@ -171,8 +180,8 @@ function getCourseNames($conn) {
                         ?>
                         <div class="card--data">
                             <div class="card--content">
-                            <button class="add"><i class="ri-add-line"></i>Add Faculty</button>
-                                <h1><?php echo $faculty;?> faculties </h1> 
+                            <button class="add"><i class="ri-add-line"></i>Add Course</button>
+                                <h1><?php echo $faculty;?> Course </h1> 
                             </div>
                             <i class="ri-user-line card--icon--lg"></i>
                         </div>
@@ -192,7 +201,11 @@ function getCourseNames($conn) {
                         <thead>
                             <tr>
                                 <th>Name</th>
+<<<<<<< HEAD
                                 <th>Faculty</th>
+=======
+                                <th>Course</th>
+>>>>>>> 5fc7510542033e9ebdba711b025df2a820b8e5c8
                                 <th>Total Subject</th>
                                 <th>Total Students</th>
                                 <th>Date Created</th>
@@ -246,7 +259,11 @@ function getCourseNames($conn) {
                             <tr>
                                 <th>Subject Code</th>
                                 <th>Name</th>
+<<<<<<< HEAD
                                 <th>Year</th>
+=======
+                                <th>Years</th>
+>>>>>>> 5fc7510542033e9ebdba711b025df2a820b8e5c8
                                 <th>Total Student</th>
                                 <th>Date Created</th>
                                 <th>Action</th>
@@ -288,7 +305,7 @@ function getCourseNames($conn) {
             </div> 
             <div class="table-container">
                 <div class="title">
-                    <h2 class="section--title">Faculty</h2>
+                    <h2 class="section--title">Course</h2>
                 </div>
                 </a>
                 <div class="table">
@@ -348,7 +365,11 @@ function getCourseNames($conn) {
 <form method="POST" action="" name="addCourse" enctype="multipart/form-data">
     <div style="display:flex; justify-content:space-around;">
         <div class="form-title">
+<<<<<<< HEAD
             <p>Add Year</p>
+=======
+            <p>Add Years</p>
+>>>>>>> 5fc7510542033e9ebdba711b025df2a820b8e5c8
         </div>
         <div>
             <span class="close">&times;</span>
@@ -360,7 +381,7 @@ function getCourseNames($conn) {
 
 
     <select required name="faculty">
-        <option value="" selected>Select Faculty</option>
+        <option value="" selected>Select Course</option>
         <?php
         $facultyNames = getFacultyNames($conn);
         foreach ($facultyNames as $faculty) {
@@ -369,7 +390,11 @@ function getCourseNames($conn) {
         ?>
     </select>
 
+<<<<<<< HEAD
     <input type="submit" class="submit" value="Save Year" name="addCourse">
+=======
+    <input type="submit" class="submit" value="Save Years" name="addCourse">
+>>>>>>> 5fc7510542033e9ebdba711b025df2a820b8e5c8
 </form>		  
     </div>
 
@@ -384,8 +409,8 @@ function getCourseNames($conn) {
         </div>
     </div>
 
-    <input type="text" name="unitName" placeholder="Unit Name" required>
-    <input type="text" name="unitCode" placeholder="Unit Code" required>
+    <input type="text" name="unitName" placeholder="subject Name" required>
+    <input type="text" name="unitCode" placeholder="subject Code" required>
 
     <select required name="lecture">
         <option value="" selected>Assign Teacher</option>
@@ -397,7 +422,11 @@ function getCourseNames($conn) {
         ?>
     </select>
     <select required name="course">
+<<<<<<< HEAD
         <option value="" selected>Select Year</option>
+=======
+        <option value="" selected>Select Years</option>
+>>>>>>> 5fc7510542033e9ebdba711b025df2a820b8e5c8
         <?php
         $courseNames = getCourseNames($conn);
         foreach ($courseNames as $course) {
@@ -414,7 +443,7 @@ function getCourseNames($conn) {
 <form method="POST" action="" name="addFaculty" enctype="multipart/form-data">
     <div style="display:flex; justify-content:space-around;">
         <div class="form-title">
-            <p>Add Faculty</p>
+            <p>Add Course</p>
         </div>
         <div>
             <span class="close">&times;</span>
@@ -427,7 +456,6 @@ function getCourseNames($conn) {
 </div>
       
       
-
 </section>
 <script src="javascript/main.js"></script>
 <script src="javascript/addCourse.js"></script>
@@ -438,7 +466,3 @@ function getCourseNames($conn) {
 ?>
 </body>
 </html>
-
-
-        
-      

@@ -127,12 +127,36 @@ $unitCode = isset($_GET['unit']) ? $_GET['unit'] : '';
 $startDate = isset($_GET['startDate']) ? $_GET['startDate'] : '';
 $endDate = isset($_GET['endDate']) ? $_GET['endDate'] : '';
 
+<<<<<<< HEAD
 $studentRows = fetchStudentRecords($conn, $courseCode, $unitCode, $startDate, $endDate);
 $distinctDates = fetchDistinctDates($conn, $courseCode, $unitCode, $startDate, $endDate);
 $attendanceData = fetchAttendanceData($conn, $courseCode, $unitCode, $startDate, $endDate);
 
 $coursename = getCourseName($conn, $courseCode);
 $unitname = getUnitName($conn, $unitCode);
+=======
+$studentRows = fetchStudentRecordsFromDatabase($conn, $courseCode, $unitCode);
+
+$coursename = "";
+if (!empty($courseCode)) {
+    $coursename_query = "SELECT name FROM tblcourse WHERE courseCode = '$courseCode'";
+    $result = mysqli_query($conn, $coursename_query);
+    if ($result && mysqli_num_rows($result) > 0) {
+        $row = mysqli_fetch_assoc($result);
+        $coursename = $row['name'];
+    }
+}
+$unitname="";
+if (!empty($unitCode)) {
+    $unitname_query = "SELECT name FROM tblunit WHERE unitCode = '$unitCode'";
+    $result = mysqli_query($conn, $unitname_query);
+    if ($result && mysqli_num_rows($result) > 0) {
+        $row = mysqli_fetch_assoc($result);
+        $unitname = $row['name'];
+    }
+}
+
+>>>>>>> 5fc7510542033e9ebdba711b025df2a820b8e5c8
 ?>
 
 <!DOCTYPE html>
@@ -151,6 +175,7 @@ $unitname = getUnitName($conn, $unitCode);
 <body>
     <?php include 'includes/topbar.php'; ?>
     <section class="main">
+<<<<<<< HEAD
         <?php include 'includes/sidebar.php'; ?>
         <div class="main--content">
             <form class="lecture-options" id="selectForm">
@@ -160,6 +185,83 @@ $unitname = getUnitName($conn, $unitCode);
                     $courseNames = getCourseNames($conn);
                     foreach ($courseNames as $course) {
                         echo '<option value="' . $course["courseCode"] . '">' . $course["name"] . '</option>';
+=======
+        <?php include 'includes/sidebar.php';?>
+    <div class="main--content">
+    <form class="lecture-options" id="selectForm">
+    <select required name="course" id="courseSelect"  onChange="updateTable()">
+        <option value="" selected>Select Year</option>
+        <?php
+        $courseNames = getCourseNames($conn);
+        foreach ($courseNames as $course) {
+            echo '<option value="' . $course["courseCode"] . '">' . $course["name"] . '</option>';
+        }
+        ?>
+    </select>
+
+    <select required name="unit" id="unitSelect" onChange="updateTable()">
+        <option value="" selected>Select Subject</option>
+        <?php
+        $unitNames = getUnitNames($conn);
+        foreach ($unitNames as $unit) {
+            echo '<option value="' . $unit["unitCode"] . '">' . $unit["name"] . '</option>';
+        }
+        ?>
+    </select>
+    </form>
+
+    <button class="add" onclick="exportTableToExcel('attendaceTable', '<?php echo $unitCode ?>_on_<?php echo date('Y-m-d'); ?>','<?php echo $coursename ?>', '<?php  echo $unitname ?>')">Export Attendance As Excel</button>
+
+    <div class="table-container">
+    <div class="title">
+        <h2 class="section--title">Attendance Preview</h2>
+    </div>
+    <div class="table attendance-table" id="attendaceTable">
+    <table>
+    <thead>
+        <tr>
+            <th>Registration No</th>
+            <?php
+            $distinctDatesQuery = "SELECT DISTINCT dateMarked  FROM tblattendance WHERE course='$courseCode' AND unit='$unitCode'";
+            $distinctDatesResult = mysqli_query($conn, $distinctDatesQuery);
+
+            if ($distinctDatesResult) {
+              $distinctRegistrationQuery = "SELECT DISTINCT studentRegistrationNumber FROM tblattendance WHERE course='$courseCode' AND unit='$unitCode' ORDER BY studentRegistrationNumber ASC";
+              $distinctRegistrationResult = mysqli_query($conn, $distinctRegistrationQuery);
+                while ($dateRow = mysqli_fetch_assoc($distinctDatesResult)) {
+                    echo "<th>" . $dateRow['dateMarked'] . "</th>";
+                }
+            }
+            ?>
+        </tr>
+    </thead>
+    <tbody>
+    <?php
+
+if ($distinctRegistrationResult) {
+    while ($registrationRow = mysqli_fetch_assoc($distinctRegistrationResult)) {
+        $registrationNumber = $registrationRow['studentRegistrationNumber'];
+        echo "<tr>";
+        echo "<td>" . $registrationNumber . "</td>";
+        $attendanceQuery = "SELECT dateMarked, attendanceStatus FROM tblattendance WHERE studentRegistrationNumber = '$registrationNumber'";
+        $attendanceResult = mysqli_query($conn, $attendanceQuery);
+        if ($attendanceResult) {
+            $attendanceData = array();
+            while ($attendanceRow = mysqli_fetch_assoc($attendanceResult)) {
+                $date = $attendanceRow['dateMarked'];
+                $status = $attendanceRow['attendanceStatus'];
+                $attendanceData[$date] = $status;
+            }
+            $distinctDatesQuery = "SELECT DISTINCT dateMarked FROM tblattendance";
+            $distinctDatesResult = mysqli_query($conn, $distinctDatesQuery);
+            if ($distinctDatesResult) {
+                while ($dateRow = mysqli_fetch_assoc($distinctDatesResult)) {
+                    $date = $dateRow['dateMarked'];
+                    if (isset($attendanceData[$date])) {
+                        echo "<td>" . $attendanceData[$date] . "</td>";
+                    } else {
+                        echo "<td>Absent</td>";
+>>>>>>> 5fc7510542033e9ebdba711b025df2a820b8e5c8
                     }
                     ?>
                 </select>
