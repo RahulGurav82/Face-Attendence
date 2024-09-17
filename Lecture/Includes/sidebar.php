@@ -10,7 +10,7 @@
                 <li>
                     <a href="viewAttendance.php">
                         <span class="icon icon-1"><i class="ri-map-pin-line"></i></span>
-                        <span class="sidebar--item" style="white-space: nowrap;">View Attendance</span>
+                        <span class="sidebar--item" style="white-space: nowrap;">Defaulter List</span>
                     </a>
                 </li>
                 <li>
